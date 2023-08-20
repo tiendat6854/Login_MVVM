@@ -13,7 +13,7 @@ class LoginViewModel @Inject constructor(private val IUserRepository: IUserRepos
     private val _loginSuccess = MutableLiveData<Boolean>()
     val loginSuccess: LiveData<Boolean> = _loginSuccess
 
-    fun isAccountValid(username: String, password: String) {
+    fun checkAccountValid(username: String, password: String) {
         val userDataList = IUserRepository.readUserData()
         val isValid = userDataList.any { it.username == username && it.password == password }
         _loginSuccess.value = isValid
