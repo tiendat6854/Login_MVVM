@@ -6,19 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.loginmvvm.viewModel.LoginViewModel
-import com.example.loginmvvm.repository.UserRepository
+import androidx.fragment.app.viewModels
 import com.example.loginmvvm.databinding.FragmentLoginBinding
+import com.example.loginmvvm.viewModel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
-    private val viewModel: LoginViewModel by lazy {
-        ViewModelProvider(this)[LoginViewModel::class.java]
-    }
-    private val userRepository: UserRepository by lazy {
-        UserRepository(requireContext())
-    }
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +31,7 @@ class LoginFragment : Fragment() {
             val username = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
 
-            val userDataList = userRepository.readUserData()
-
-            viewModel.isAccountValid(username, password, userDataList)
+            viewModel.isAccountValid(username, password)
         }
 
         viewModel.loginSuccess.observe(viewLifecycleOwner) { success ->

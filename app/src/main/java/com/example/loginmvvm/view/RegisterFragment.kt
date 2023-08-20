@@ -6,19 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.loginmvvm.viewModel.RegisterViewModel
-import com.example.loginmvvm.repository.UserRepository
+import androidx.fragment.app.viewModels
 import com.example.loginmvvm.databinding.FragmentRegisterBinding
+import com.example.loginmvvm.viewModel.RegisterViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
-    private val viewModel: RegisterViewModel by lazy {
-        ViewModelProvider(this)[RegisterViewModel::class.java]
-    }
-    private val userRepository: UserRepository by lazy {
-        UserRepository(requireContext())
-    }
+    private val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,13 +29,13 @@ class RegisterFragment : Fragment() {
 
         binding.btnAction.setOnClickListener {
             val username = binding.etUsername.text.toString()
+            val password = binding.etPassword.text.toString()
 
-            val userDataList = userRepository.readUserData()
-
-            if (username.isNotBlank()) {
-                viewModel.isAccountExist(username, userDataList)
+            if (username.isNotBlank() && password.isNotBlank()) {
+                viewModel.registerUser(username, password)
             } else {
-                Toast.makeText(requireContext(), "Đăng ký không thành công", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Đăng ký không thành công", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -47,16 +43,8 @@ class RegisterFragment : Fragment() {
             if (exist) {
                 Toast.makeText(requireContext(), "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show()
             } else {
-                val username = binding.etUsername.text.toString()
-                val password = binding.etPassword.text.toString()
-                if (username.isNotBlank() && password.isNotBlank()) {
-                    userRepository.saveUserData(username, password)
-                    Toast.makeText(requireContext(), "Đăng ký thành công", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    Toast.makeText(requireContext(), "Đăng ký không thành công", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                Toast.makeText(requireContext(), "Đăng ký thành công", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

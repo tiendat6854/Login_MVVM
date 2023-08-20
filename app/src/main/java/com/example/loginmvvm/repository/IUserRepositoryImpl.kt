@@ -2,12 +2,16 @@ package com.example.loginmvvm.repository
 
 import android.content.Context
 import com.example.loginmvvm.model.User
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserRepository(private val context: Context) {
+@Singleton
+class IUserRepositoryImpl @Inject constructor(@ApplicationContext private val context: Context) : IUserRepository {
 
-    fun readUserData(): List<User> {
+    override fun readUserData(): List<User> {
         val userDataList = mutableListOf<User>()
         try {
             val fileInputStream = context.openFileInput("user_data.csv")
@@ -27,7 +31,7 @@ class UserRepository(private val context: Context) {
         return userDataList
     }
 
-    fun saveUserData(username: String, password: String) {
+    override fun saveUserData(username: String, password: String) {
         val userData = "$username,$password\n"
         try {
             val fileOutputStream = context.openFileOutput("user_data.csv", Context.MODE_APPEND)

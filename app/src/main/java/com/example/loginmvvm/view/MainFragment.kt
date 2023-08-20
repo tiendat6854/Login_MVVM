@@ -9,7 +9,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.loginmvvm.R
 import com.example.loginmvvm.databinding.FragmentMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var navController: NavController
@@ -36,4 +38,5 @@ class MainFragment : Fragment() {
         }
     }
 }
+
 
