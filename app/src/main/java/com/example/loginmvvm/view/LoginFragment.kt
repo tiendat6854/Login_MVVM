@@ -31,7 +31,7 @@ class LoginFragment : Fragment() {
             val username = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
 
-            viewModel.isAccountValid(username, password)
+            viewModel.checkAccountValid(username, password)
         }
 
         viewModel.loginSuccess.observe(viewLifecycleOwner) { success ->
